@@ -276,6 +276,21 @@ if(!isMobile()) {
         renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
         console.log(SCREEN_WIDTH + "x" + SCREEN_HEIGHT)
     }
+    TWEEN.autoPlay(true); // simplify the your code
+    setInterval(() => {
+        const rect = document.getElementById('canvas-1').getClientRects()[0];
+        const dir = Math.random() > 0.5;
+        let coords = {x: dir ? 0 : SCREEN_WIDTH, y: Math.random() * SCREEN_HEIGHT };
+        let rabbit = {x: dir ? SCREEN_WIDTH : 0, y: Math.random() * SCREEN_HEIGHT };
+        new TWEEN.Tween(rabbit).to({x: dir ? SCREEN_WIDTH : 0, y: Math.random() * SCREEN_HEIGHT }).start();
+        let tween = new TWEEN.Tween(coords)
+            .to(rabbit, 1000)
+	        .on('update', ({x, y}) => {
+                onDocumentMouseMove({clientX: x + rect.left, clientY: y + rect.top})
+	        })
+	.start();
+        
+    }, 1500);
 
     function onDocumentMouseMove(event) {
         let clientX = event.clientX;
